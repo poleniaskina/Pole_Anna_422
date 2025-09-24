@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Угадай число</title>
+</head>
+<body>
+  <script>
+    const secretNumber = Math.floor(Math.random() * 100) + 1;
+    let attempts = 3;
+
+    while (attempts > 0) {
+      let userGuess = prompt(`Угадайте число от 1 до 100.\nОсталось попыток: ${attempts}`);
+
+      if (userGuess === null) { // если пользователь нажал "Отмена"
+        alert('Игра прервана.');
+        break;
+      }
+
+      userGuess = Number(userGuess);
+
+      if (isNaN(userGuess) || userGuess < 1 || userGuess > 100) {
+        alert('Пожалуйста, введите число от 1 до 100.');
+        continue;
+      }
+
+      if (userGuess === secretNumber) {
+        alert('Поздравляем! Вы угадали число!');
+        break;
+      } else {
+        attempts--;
+        if (attempts === 0) {
+          alert(`К сожалению, попытки закончились. Загаданное число было ${secretNumber}.`);
+        } else if (userGuess < secretNumber) {
+          alert('Загаданное число больше. Попробуйте еще раз.');
+        } else {
+          alert('Загаданное число меньше. Попробуйте еще раз.');
+        }
+      }
+    }
+  </script>
+</body>
+</html>
