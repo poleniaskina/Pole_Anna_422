@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body style="background-color: rgb(231, 158, 91);">
+
+<h1 style="color:rgb(62, 17, 3);font-size: 36px;"><b>ДОДО</b></h1>
+<p>Не медли, тут вкусная пицца! Заказывай прямо сейчас</p>
+
+<body>
+
+    <img src="https://images.gastronom.ru/vynVR3iu1Xms2exlP-MZnoBa8Thu-n2FUv7_E7abdQA/pr:recipe-preview-image/g:ce/rs:auto:764:430:0/L2Ntcy9hbGwtaW1hZ2VzL2ZlNjZiM2MxLWY0ZGItNDI3Zi05M2NlLTM4Y2NmZmJmYjdkZC5wbmc.webp" 
+    width="400" 
+    height="300" 
+    alt="">
+
+    <form>
+        <label for="name">Название пиццы</label> <br/>
+        <input type="text" 
+        placeholder="название пиццы" 
+        id="name"><br/>
+
+    <button id="add" onclick="add()" type="button" style="background-color: #718650;">Добавить</button>
+    </form>
+
+    <div>
+    <p>Заказы</p>
+    <ul id="orders">
+        <li>Три сезона <input type="checkbox"></li>
+        <li>Терияки <input type="checkbox"></li>
+        <li>Чесночный цыпленок <input type="checkbox"></li>
+        <li>Четыре сыра <input type="checkbox"></li>
+        <li>Сырная <input type="checkbox"></li>
+        <li>Креветка и песто <input type="checkbox"></li>
+        <li>Аррива! <input type="checkbox"></li>
+        <li>Додо <input type="checkbox"></li>
+    
+
+    </ul>
+    </div>
+ <script>
+    // console.log('Hello')
+
+    let nameInput = document.getElementById('name');
+
+    function add() {
+        console.log(nameInput.value)
+    }
+
+ </script>
+</body>
+</html>
