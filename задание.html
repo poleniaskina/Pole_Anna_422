@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        
+        .box {
+            width: 200px;
+            height: 200px;
+            background-color: lightblue;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+            border-radius: 25px; /* Закругленные углы */
+        }
+        
+        .counter {
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 10px; /* Закругленные углы для кнопки */
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <p>Magical Button 	☆ ～('▽^人)</p>
+    <div class="counter">Клики: <span id="clickCounter">0</span> раз</div>
+    <button id='MagicalButton'>Press me!</button>
+    <div id="MagicalBox" class="box"> ヽ(*・ω・)ﾉ </div>
+
+    <script>
+        const button = document.getElementById('MagicalButton');
+        const box = document.getElementById('MagicalBox');
+        const clickCounter = document.getElementById('clickCounter');
+        
+        let isColorChanged = false;
+        let clickCount = 0;
+        let size = 200;
+
+        button.addEventListener('click', function() {
+            // Увеличиваем счетчик нажатий
+            clickCount++;
+            clickCounter.textContent = clickCount;
+            
+            if (!isColorChanged) {
+                box.style.backgroundColor = 'tomato';
+                box.textContent = '°˖✧◝(⁰▿⁰)◜✧˖° tomato';
+                isColorChanged = true;
+                
+                // Увеличиваем размер
+                size += 20;
+                box.style.width = size + 'px';
+                box.style.height = size + 'px';
+            } else {
+                box.style.backgroundColor = 'lightblue';
+                box.textContent = '(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧ sky';
+                isColorChanged = false;
+                
+                // Уменьшаем размер
+                size = Math.max(100, size - 20); // Минимальный размер 100px
+                box.style.width = size + 'px';
+                box.style.height = size + 'px';
+            }
+        });
+    </script>
+</body>
+</html>
