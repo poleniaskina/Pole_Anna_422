@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Авторизация и список пользователей</title>
+  <style>
+    /* Базовые стили */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      color: #333;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* Навигация */
+    nav {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 30px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      padding: 12px 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-btn {
+      background: transparent;
+      color: white;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .nav-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .nav-btn.active {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.7);
+    }
+
+    /* Контейнеры */
+    .container {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      padding: 40px;
+      width: 100%;
+      max-width: 480px;
+      transition: transform 0.4s ease, opacity 0.4s ease;
+    }
+
+    .container:hover {
+      transform: translateY(-5px);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #4a5568;
+      font-size: 28px;
+      font-weight: 700;
+      position: relative;
+    }
+
+    h2:after {
+      content: '';
+      display: block;
+      width: 60px;
+      height: 4px;
+      background: linear-gradient(to right, #667eea, #764ba2);
+      margin: 10px auto 0;
+      border-radius: 2px;
+    }
+
+    /* Форма */
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #4a5568;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+
+    .input-field:focus {
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      outline: none;
+    }
+
+    .submit-btn {
+      width: 100%;
+      background: linear-gradient(to right, #667eea, #764ba2);
+      color: white;
+      border: none;
+      padding: 14px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .mode-toggle {
+      background: none;
+      border: none;
+      color: #667eea;
+      margin-top: 20px;
+      font-size: 15px;
+      cursor: pointer;
+      text-align: center;
+      display: block;
+      width: 100%;
+      padding: 10px;
+      transition: color 0.3s ease;
+    }
+
+    .mode-toggle:hover {
+      color: #764ba2;
+      text-decoration: underline;
+    }
+
+    /* Список пользователей */
+    .user-list {
+      list-style: none;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .user-item {
+      padding: 16px 20px;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      transition: background 0.2s ease;
+    }
+
+    .user-item:hover {
+      background: #f7fafc;
+    }
+
+    .user-item:last-child {
+      border-bottom: none;
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(to right, #667eea, #764ba2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      margin-right: 15px;
+    }
+
+    .user-name {
+      font-weight: 500;
+      color: #4a5568;
+    }
+
+    /* Анимации */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.5s ease forwards;
+    }
+
+    /* Адаптивность */
+    @media (max-width: 600px) {
+      .container {
+        padding: 30px 20px;
+      }
+      
+      nav {
+        flex-direction: column;
+        width: 100%;
+        max-width: 480px;
+      }
+      
+      h2 {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Навигация -->
+  <nav>
+    <button id="toAuth" class="nav-btn active">Авторизация</button>
+    <button id="toUsers" class="nav-btn">Список пользователей</button>
+  </nav>
+
+  <!-- Форма авторизации/регистрации -->
+  <div id="auth-container" class="container fade-in">
+    <h2 id="auth-title">Войти</h2>
+    <form id="auth-form">
+      <div class="form-group">
+        <label for="login">Логин:</label>
+        <input type="text" id="login" class="input-field" required placeholder="Введите ваш логин">
+      </div>
+      <div class="form-group">
+        <label for="password">Пароль:</label>
+        <input type="password" id="password" class="input-field" required placeholder="Введите ваш пароль">
+      </div>
+      <div id="repeat-password-container" class="form-group hidden">
+        <label for="repeatPassword">Повторите пароль:</label>
+        <input type="password" id="repeatPassword" class="input-field" placeholder="Повторите ваш пароль">
+      </div>
+      <button type="submit" id="submitButton" class="submit-btn">Войти</button>
+    </form>
+    <button id="switchMode" class="mode-toggle">Зарегистрироваться</button>
+  </div>
+
+  <!-- Список пользователей -->
+  <div id="user-list-container" class="container hidden">
+    <h2>Список пользователей</h2>
+    <ul id="user-list" class="user-list">
+     
+    </ul>
+  </div>
+
+  <script>
+    // Переменные для режима
+    let isRegisterMode = false;
+
+    // Получение элементов
+    const authContainer = document.getElementById('auth-container');
+    const userListContainer = document.getElementById('user-list-container');
+    const authTitle = document.getElementById('auth-title');
+    const submitButton = document.getElementById('submitButton');
+    const switchModeBtn = document.getElementById('switchMode');
+    const toAuthBtn = document.getElementById('toAuth');
+    const toUsersBtn = document.getElementById('toUsers');
+    const repeatPasswordContainer = document.getElementById('repeat-password-container');
+
+    // Функция переключения режима формы
+    function toggleMode() {
+      isRegisterMode = !isRegisterMode;
+      if (isRegisterMode) {
+        authTitle.textContent = 'Регистрация';
+        submitButton.textContent = 'Зарегистрироваться';
+        repeatPasswordContainer.classList.remove('hidden');
+        switchModeBtn.textContent = 'Уже есть аккаунт? Войти';
+      } else {
+        authTitle.textContent = 'Войти';
+        submitButton.textContent = 'Войти';
+        repeatPasswordContainer.classList.add('hidden');
+        switchModeBtn.textContent = 'Нет аккаунта? Зарегистрироваться';
+      }
+    }
+
+    // Обработчик переключения режима
+    switchModeBtn.addEventListener('click', toggleMode);
+
+    // Обработка навигации
+    toAuthBtn.addEventListener('click', () => {
+      showAuthForm();
+      setActiveNavButton(toAuthBtn);
+    });
+    
+    toUsersBtn.addEventListener('click', () => {
+      showUserList();
+      setActiveNavButton(toUsersBtn);
+    });
+
+    // Установка активной кнопки навигации
+    function setActiveNavButton(activeBtn) {
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      activeBtn.classList.add('active');
+    }
+
+    // Показать форму авторизации/регистрации
+    function showAuthForm() {
+      userListContainer.classList.add('hidden');
+      authContainer.classList.remove('hidden');
+      authContainer.classList.add('fade-in');
+    }
+
+    // Показать список пользователей
+    function showUserList() {
+      authContainer.classList.add('hidden');
+      userListContainer.classList.remove('hidden');
+      userListContainer.classList.add('fade-in');
+    }
+
+    // Обработка отправки формы
+    document.getElementById('auth-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const login = document.getElementById('login').value;
+      const password = document.getElementById('password').value;
+      const repeatPassword = document.getElementById('repeatPassword').value;
+
+      if (isRegisterMode) {
+        // В регистрации можно проверить совпадение паролей
+        if (password !== repeatPassword) {
+          alert('Пароли не совпадают');
+          return;
+        }
+        alert(`Зарегистрирован пользователь: ${login}`);
+      } else {
+        alert(`Вход выполнен для: ${login}`);
+      }
+    });
+
+    // Изначально показываем форму авторизации
+    showAuthForm();
+  </script>
+</body>
+</html>
